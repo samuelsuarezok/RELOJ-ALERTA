@@ -48,18 +48,22 @@ es `cambiame`; cambiala en un archivo `.env.local` (mirá `.env.example`).
 Abrí `/` en el navegador del equipo y tocá **Pantalla completa**. La página pide
 un *wake lock* para que la pantalla no se apague sola.
 
-**Sonido:** los navegadores no dejan reproducir audio hasta que alguien toca la
-página. La primera vez aparece un botón para activarlo; con un toque queda
-habilitado mientras la pestaña siga abierta. Si el equipo se reinicia solo,
-conviene abrir Chrome con `--autoplay-policy=no-user-gesture-required` para
-saltear ese paso.
-
-Para que arranque solo después de un corte de luz, lo más simple es dejar el
-navegador en modo kiosco al inicio de sesión:
+**Sonido: el navegador tiene que abrirse en modo kiosco.** Por defecto los
+navegadores bloquean el audio hasta que alguien toca la página, y un monitor
+colgado en altura no lo toca nadie. Abriéndolo con la bandera de abajo el sonido
+queda habilitado desde el arranque, sin intervención:
 
 ```bash
 chromium --kiosk --autoplay-policy=no-user-gesture-required https://TU-APP.vercel.app/
 ```
+
+Dejá ese comando en el arranque de sesión del equipo y el cartel vuelve solo
+después de un corte de luz, con sonido y todo.
+
+La pantalla reintenta habilitar el audio sola cada 5 segundos. Si aun así el
+navegador lo bloquea (porque se abrió a mano, sin la bandera), aparece abajo a la
+derecha una marca chica que dice *Sonido en espera*: con un toque en cualquier
+parte de la pantalla queda habilitado. En modo kiosco esa marca nunca se ve.
 
 ## Alertas
 

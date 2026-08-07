@@ -173,19 +173,21 @@ button { cursor: pointer; }
 }
 .chip:hover { color: var(--tiza); border-color: var(--humo); }
 
+/* Marca discreta abajo a la derecha: solo aparece si el navegador bloquea el
+   audio. En modo kiosco nunca se ve. */
 .aviso-audio {
   position: absolute;
-  left: 50%;
-  bottom: 24px;
-  transform: translateX(-50%);
-  background: var(--tungsteno);
-  color: #1a1204;
+  right: 14px;
+  bottom: 14px;
+  background: transparent;
   border: 0;
-  border-radius: 999px;
-  padding: 12px 24px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  box-shadow: 0 8px 40px rgba(242, 169, 59, 0.35);
+  padding: 4px 6px;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tungsteno);
+  opacity: 0.65;
 }
 
 .sin-conexion {

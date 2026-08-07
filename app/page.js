@@ -125,16 +125,30 @@ export default function Pantalla() {
     };
   }, []);
 
+  /* En un equipo abierto en modo kiosco el audio se habilita solo. Si el navegador
+     lo bloquea, se reintenta cada 5 s y ante cualquier interacción. */
+  useEffect(() => {
+    let vivo = true;
+    const intentar = async () => {
+      if (!vivo) return;
+      const ok = await desbloquear();
+      setNecesitaAudio(!ok);
+    };
+    intentar();
+    const id = setInterval(intentar, 5000);
+    const eventos = ['pointerdown', 'keydown', 'touchstart', 'visibilitychange'];
+    eventos.forEach((e) => window.addEventListener(e, intentar));
+    return () => {
+      vivo = false;
+      clearInterval(id);
+      eventos.forEach((e) => window.removeEventListener(e, intentar));
+    };
+  }, []);
+
   const activarAudio = async () => {
     const ok = await desbloquear();
-    if (ok) setNecesitaAudio(false);
+    setNecesitaAudio(!ok);
   };
-
-  useEffect(() => {
-    const alTocar = () => audioListo() && setNecesitaAudio(false);
-    window.addEventListener('pointerdown', alTocar);
-    return () => window.removeEventListener('pointerdown', alTocar);
-  }, []);
 
   const pantallaCompleta = () => {
     if (document.fullscreenElement) document.exitFullscreen();
@@ -197,8 +211,8 @@ export default function Pantalla() {
       </div>
 
       {necesitaAudio && (
-        <button className="aviso-audio" onClick={activarAudio}>
-          Tocá para activar el sonido de las alertas
+        <button className="aviso-audio" onClick={activarAudio} title="El navegador está bloqueando el audio">
+          Sonido en espera
         </button>
       )}
 
