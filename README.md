@@ -65,6 +65,29 @@ navegador lo bloquea (porque se abrió a mano, sin la bandera), aparece abajo a 
 derecha una marca chica que dice *Sonido en espera*: con un toque en cualquier
 parte de la pantalla queda habilitado. En modo kiosco esa marca nunca se ve.
 
+## El logo
+
+El logo aparece abajo a la izquierda en la pantalla y al pie del panel. Se sirve
+desde `public/denso.png`, ya con el fondo transparente; el original con el
+recuadro blanco queda guardado en `assets/DENSO.png`.
+
+Para regenerarlo desde el original:
+
+```bash
+node scripts/quitar-fondo.mjs assets/DENSO.png public/denso.png
+```
+
+El script vuelve transparente todo lo blanco, recorta el margen sobrante y
+conserva los bordes suavizados de las letras. Si quedaran halos claros alrededor,
+subí el umbral: `UMBRAL=250 node scripts/quitar-fondo.mjs ...`.
+
+**El nombre va en minúscula.** Windows no distingue mayúsculas de minúsculas pero
+Vercel sí: si el archivo se llama `DENSO.png`, en el servidor la pantalla lo pide
+como `/denso.png` y da 404. Por eso el original vive fuera de `public/`.
+
+Si el archivo falta, no se dibuja nada: el cartel nunca muestra el ícono de
+imagen rota.
+
 ## Alertas
 
 Cada alerta tiene hora, días de la semana, duración y color. Podés combinar:

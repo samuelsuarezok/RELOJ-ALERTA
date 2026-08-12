@@ -190,16 +190,37 @@ button { cursor: pointer; }
   opacity: 0.65;
 }
 
+/* Arriba a la izquierda: abajo va el logo y el reloj ocupa el centro. */
 .sin-conexion {
   position: absolute;
   left: 14px;
-  bottom: 14px;
+  top: 14px;
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--tungsteno);
 }
+
+/* Logo de la empresa: esquina inferior izquierda, sin robarle peso a la hora.
+   El PNG va sin fondo blanco (ver scripts/quitar-fondo.mjs). Ojo: no llamarlo
+   .marca, que ya son las marcas horarias de la esfera. */
+.logo {
+  position: absolute;
+  left: 3.5vmin;
+  bottom: 3.5vmin;
+  width: clamp(96px, 13vmin, 200px);
+  height: auto;
+  opacity: 0.9;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+  transition: opacity 200ms linear;
+}
+
+/* Mientras suena una alerta manda el mensaje: si el logo quedara al 90% sería
+   lo más brillante del cartel en cada parpadeo. */
+.pantalla.alerta .logo { opacity: 0.3; }
 
 /* ─────────────────────────  CONSOLA  ───────────────────────── */
 
@@ -434,6 +455,14 @@ input[type='range'] { width: 100%; accent-color: var(--menta); }
   line-height: 1.55;
   margin: 20px 0;
 }
+
+.pie {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+.pie .logo-pie { width: 116px; height: auto; opacity: 0.7; }
+.pie .logo-pie:hover { opacity: 1; }
 
 .acceso {
   max-width: 380px;

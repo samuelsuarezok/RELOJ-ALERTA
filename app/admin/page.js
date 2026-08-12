@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { partes, dosDigitos, NOMBRE_DIAS, ZONAS } from '@/lib/clock';
 import { desbloquear, reproducir, detener } from '@/lib/sonido';
+import Marca from '../marca';
 
 const PATRONES = [
   ['beep', 'Bip doble'],
@@ -174,12 +175,12 @@ export default function Panel() {
         </div>
       </header>
 
-      {almacen === 'memoria' && (
-        <p className="nota">
-          Los cambios se están guardando en memoria: al reiniciar el servidor se pierden.
-          Conectá una base Vercel KV al proyecto para que persistan.
-        </p>
-      )}
+        {almacen === 'memoria' && (
+          <p className="nota">
+            Los cambios se están guardando en memoria: al reiniciar el servidor se pierden.
+            Conectá una base Vercel KV al proyecto para que persistan.
+          </p>
+        )}
 
       <div className="eyebrow">El día completo</div>
       <div className="franja">
@@ -439,6 +440,10 @@ export default function Panel() {
           </div>
         </div>
       )}
+
+      <footer className="pie">
+        <Marca className="logo-pie" />
+      </footer>
 
       <div className="guardar">
         <button className="btn primario" onClick={guardar} disabled={guardando || !sucio}>

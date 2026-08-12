@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { partes, dosDigitos, fechaLarga, claveMinuto, coincide } from '@/lib/clock';
 import { DEFAULT_CONFIG } from '@/lib/defaults';
 import { desbloquear, audioListo, reproducir, detener } from '@/lib/sonido';
+import Marca from './marca';
 
 const CACHE = 'reloj:config:cache';
 const DISPARADAS = 'reloj:disparadas';
@@ -217,6 +218,8 @@ export default function Pantalla() {
       )}
 
       {!enLinea && <div className="sin-conexion">Sin conexión · usando la última configuración</div>}
+
+      <Marca className="logo" />
     </main>
   );
 }
