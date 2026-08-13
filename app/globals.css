@@ -34,7 +34,7 @@ button { cursor: pointer; }
   min-height: 100dvh;
   display: grid;
   place-items: center;
-  padding: 4vmin;
+  padding: 2.5vmin;
   position: relative;
   overflow: hidden;
   transition: background-color 120ms linear;
@@ -43,13 +43,13 @@ button { cursor: pointer; }
 .cartel {
   display: flex;
   align-items: center;
-  gap: 4vmin;
+  gap: 3vmin;
   width: 100%;
-  max-width: 1600px;
+  max-width: 2400px;
   justify-content: center;
 }
 
-.esfera { flex: 0 0 auto; width: 16vmin; height: 16vmin; }
+.esfera { flex: 0 0 auto; width: 21vmin; height: 21vmin; }
 .esfera .marca { stroke: var(--acento); stroke-width: 2.6; }
 .esfera .aguja { stroke: var(--acento); stroke-linecap: round; }
 
@@ -57,7 +57,7 @@ button { cursor: pointer; }
 
 .digitos {
   font-family: var(--mono);
-  font-size: clamp(64px, 19vmin, 250px);
+  font-size: clamp(64px, min(23vw, 46vh), 500px);
   line-height: 1;
   font-weight: 400;
   letter-spacing: -0.005em;
@@ -76,7 +76,7 @@ button { cursor: pointer; }
 
 .fecha {
   font-family: var(--mono);
-  font-size: clamp(15px, 4.4vmin, 58px);
+  font-size: clamp(15px, 5.4vmin, 76px);
   font-weight: 400;
   color: var(--tiza);
   margin-top: 0.1em;
@@ -84,7 +84,7 @@ button { cursor: pointer; }
 
 .rotulo {
   font-family: var(--mono);
-  font-size: clamp(11px, 1.5vmin, 18px);
+  font-size: clamp(11px, 1.9vmin, 24px);
   letter-spacing: 0.34em;
   text-transform: uppercase;
   color: var(--humo);
@@ -195,7 +195,7 @@ button { cursor: pointer; }
   position: absolute;
   left: 3.5vmin;
   bottom: 3.5vmin;
-  width: clamp(96px, 13vmin, 200px);
+  width: clamp(120px, 17vmin, 270px);
   height: auto;
   opacity: 0.9;
   pointer-events: none;
@@ -458,8 +458,8 @@ input[type='range'] { width: 100%; accent-color: var(--menta); }
   * { transition: none !important; }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px), (orientation: portrait) {
   .cartel { flex-direction: column; gap: 3vmin; }
-  .esfera { width: 26vmin; height: 26vmin; }
-  .digitos { font-size: clamp(56px, 26vmin, 160px); }
+  .esfera { width: 32vmin; height: 32vmin; }
+  .digitos { font-size: clamp(56px, min(26vw, 30vh), 400px); }
 }
