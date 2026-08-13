@@ -195,7 +195,7 @@ button { cursor: pointer; }
   position: absolute;
   left: 3.5vmin;
   bottom: 3.5vmin;
-  width: clamp(144px, 20.5vmin, 325px);
+  width: clamp(202px, 28.7vmin, 455px);
   height: auto;
   opacity: 0.9;
   pointer-events: none;
