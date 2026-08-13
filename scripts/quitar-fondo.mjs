@@ -1,18 +1,8 @@
-/* Convierte el blanco de un PNG en transparencia, para que el logo se apoye
-   sobre el fondo negro del cartel sin el recuadro blanco.
-
-   Uso:  node scripts/quitar-fondo.mjs <entrada.png> [salida.png]
-
-   No usa dependencias: decodifica el PNG con el zlib de Node, calcula el alfa
-   de cada píxel a partir de cuánto se aleja del blanco y desmultiplica el color
-   para que los bordes suavizados queden limpios. */
-
 import { readFileSync, writeFileSync } from 'node:fs';
 import { deflateSync, inflateSync } from 'node:zlib';
 
 const FIRMA = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
-/* ── CRC32, necesario para escribir los trozos del PNG ── */
 const TABLA_CRC = (() => {
   const t = new Uint32Array(256);
   for (let n = 0; n < 256; n++) {
@@ -29,7 +19,6 @@ const crc32 = (buf) => {
   return (c ^ 0xffffffff) >>> 0;
 };
 
-/* ── Lectura ── */
 function leerTrozos(buf) {
   if (!buf.subarray(0, 8).equals(FIRMA)) throw new Error('El archivo no es un PNG.');
   const trozos = [];
@@ -125,10 +114,6 @@ function aRGBA(buf) {
   return { ancho, alto, rgba };
 }
 
-/* ── Blanco → transparente ──
-   El alfa sale de cuánto se aparta el píxel del blanco: el blanco puro
-   desaparece, el rojo pleno queda opaco y los bordes suavizados conservan un
-   alfa intermedio con el color desmultiplicado. */
 function blancoATransparente(rgba, umbral) {
   for (let i = 0; i < rgba.length; i += 4) {
     if (rgba[i + 3] === 0) continue;
@@ -146,7 +131,6 @@ function blancoATransparente(rgba, umbral) {
   }
 }
 
-/* ── Recorte del margen transparente, para que el logo llene su caja ── */
 function recortar({ ancho, alto, rgba }) {
   let x0 = ancho, y0 = alto, x1 = -1, y1 = -1;
   for (let y = 0; y < alto; y++) {
@@ -170,7 +154,6 @@ function recortar({ ancho, alto, rgba }) {
   return { ancho: w, alto: h, rgba: salida };
 }
 
-/* ── Escritura ── */
 function trozo(tipo, datos) {
   const largo = Buffer.alloc(4);
   largo.writeUInt32BE(datos.length);
@@ -184,16 +167,16 @@ function escribirPNG({ ancho, alto, rgba }) {
   const ihdr = Buffer.alloc(13);
   ihdr.writeUInt32BE(ancho, 0);
   ihdr.writeUInt32BE(alto, 4);
-  ihdr[8] = 8;   // bits por canal
-  ihdr[9] = 6;   // RGBA
-  ihdr[10] = 0;  // compresión
-  ihdr[11] = 0;  // filtro
-  ihdr[12] = 0;  // sin entrelazado
+  ihdr[8] = 8;
+  ihdr[9] = 6;
+  ihdr[10] = 0;
+  ihdr[11] = 0;
+  ihdr[12] = 0;
 
   const paso = ancho * 4;
   const cruda = Buffer.alloc((paso + 1) * alto);
   for (let y = 0; y < alto; y++) {
-    cruda[y * (paso + 1)] = 0; // sin filtro
+    cruda[y * (paso + 1)] = 0;
     rgba.copy(cruda, y * (paso + 1) + 1, y * paso, (y + 1) * paso);
   }
 
@@ -205,7 +188,6 @@ function escribirPNG({ ancho, alto, rgba }) {
   ]);
 }
 
-/* ── Programa ── */
 const [entrada, salida = entrada.replace(/\.png$/i, '') + '-transparente.png'] =
   process.argv.slice(2);
 
@@ -214,7 +196,7 @@ if (!entrada) {
   process.exit(1);
 }
 
-const UMBRAL = Number(process.env.UMBRAL || 246); // 0-255: qué tan claro cuenta como fondo
+const UMBRAL = Number(process.env.UMBRAL || 246);
 
 const imagen = aRGBA(readFileSync(entrada));
 blancoATransparente(imagen.rgba, UMBRAL);

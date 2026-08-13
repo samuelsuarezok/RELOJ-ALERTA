@@ -12,11 +12,11 @@ const DISPARADAS = 'reloj:disparadas';
 export default function Pantalla() {
   const [config, setConfig] = useState(DEFAULT_CONFIG);
   const [ahora, setAhora] = useState(() => Date.now());
-  const [alerta, setAlerta] = useState(null); // { alert, hasta }
+  const [alerta, setAlerta] = useState(null);
   const [necesitaAudio, setNecesitaAudio] = useState(false);
   const [enLinea, setEnLinea] = useState(true);
 
-  const desfase = useRef(0); // hora del servidor − hora local
+  const desfase = useRef(0);
   const configRef = useRef(config);
   const alertaRef = useRef(null);
   const disparadas = useRef(new Set());
@@ -24,7 +24,6 @@ export default function Pantalla() {
   configRef.current = config;
   alertaRef.current = alerta;
 
-  /* Configuración: caché local primero, después servidor. */
   useEffect(() => {
     try {
       const guardada = localStorage.getItem(CACHE);
@@ -55,7 +54,6 @@ export default function Pantalla() {
     return () => clearInterval(id);
   }, [traerConfig]);
 
-  /* Sincronización de hora contra el servidor, por si el equipo está desfasado. */
   useEffect(() => {
     const sincronizar = async () => {
       try {
@@ -71,13 +69,11 @@ export default function Pantalla() {
     return () => clearInterval(id);
   }, []);
 
-  /* Latido principal. */
   useEffect(() => {
     const id = setInterval(() => setAhora(Date.now() + desfase.current), 200);
     return () => clearInterval(id);
   }, []);
 
-  /* Evaluación de alertas en cada tick. */
   useEffect(() => {
     const cfg = configRef.current;
     const p = partes(new Date(ahora), cfg.timezone);
@@ -109,7 +105,6 @@ export default function Pantalla() {
     }
   }, [ahora]);
 
-  /* Mantener la pantalla encendida en el equipo del cartel. */
   useEffect(() => {
     let lock = null;
     const pedir = async () => {
@@ -126,8 +121,6 @@ export default function Pantalla() {
     };
   }, []);
 
-  /* En un equipo abierto en modo kiosco el audio se habilita solo. Si el navegador
-     lo bloquea, se reintenta cada 5 s y ante cualquier interacción. */
   useEffect(() => {
     let vivo = true;
     const intentar = async () => {

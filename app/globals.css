@@ -1,6 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
-/* Paleta tomada de la foto de referencia: pantalla negra sobre pared de
-   hormigón, dígitos menta, barra LED violeta en el techo y foco de tungsteno. */
 :root {
   --noche: #06080b;
   --hormigon: #23282f;
@@ -13,8 +11,6 @@
   --alarma: #ff4d3d;
   --acento: var(--menta);
 
-  /* La pantalla usa la misma familia que el reloj de referencia. Si Roboto no
-     está disponible, cae a las alternativas del sistema, que son casi idénticas. */
   --mono: Roboto, "Helvetica Neue", Arial, "Segoe UI", system-ui, sans-serif;
   --sans: "Helvetica Neue", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
@@ -33,8 +29,6 @@ html, body {
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
 :focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
-
-/* ─────────────────────────  PANTALLA  ───────────────────────── */
 
 .pantalla {
   min-height: 100dvh;
@@ -97,7 +91,6 @@ button { cursor: pointer; }
   padding-left: 0.4vmin;
 }
 
-/* Estado de alerta: el cartel entero late */
 .pantalla.alerta { background: color-mix(in srgb, var(--alarma) 12%, var(--noche)); }
 .pantalla.alerta .digitos,
 .pantalla.alerta .esfera .marca,
@@ -146,7 +139,6 @@ button { cursor: pointer; }
   opacity: 0.75;
 }
 
-/* Controles discretos de la pantalla */
 .barra {
   position: absolute;
   top: 0;
@@ -173,8 +165,6 @@ button { cursor: pointer; }
 }
 .chip:hover { color: var(--tiza); border-color: var(--humo); }
 
-/* Marca discreta abajo a la derecha: solo aparece si el navegador bloquea el
-   audio. En modo kiosco nunca se ve. */
 .aviso-audio {
   position: absolute;
   right: 14px;
@@ -190,7 +180,6 @@ button { cursor: pointer; }
   opacity: 0.65;
 }
 
-/* Arriba a la izquierda: abajo va el logo y el reloj ocupa el centro. */
 .sin-conexion {
   position: absolute;
   left: 14px;
@@ -202,9 +191,6 @@ button { cursor: pointer; }
   color: var(--tungsteno);
 }
 
-/* Logo de la empresa: esquina inferior izquierda, sin robarle peso a la hora.
-   El PNG va sin fondo blanco (ver scripts/quitar-fondo.mjs). Ojo: no llamarlo
-   .marca, que ya son las marcas horarias de la esfera. */
 .logo {
   position: absolute;
   left: 3.5vmin;
@@ -218,11 +204,7 @@ button { cursor: pointer; }
   transition: opacity 200ms linear;
 }
 
-/* Mientras suena una alerta manda el mensaje: si el logo quedara al 90% sería
-   lo más brillante del cartel en cada parpadeo. */
 .pantalla.alerta .logo { opacity: 0.3; }
-
-/* ─────────────────────────  CONSOLA  ───────────────────────── */
 
 .consola {
   max-width: 1080px;
@@ -257,7 +239,6 @@ button { cursor: pointer; }
   margin: 36px 0 12px;
 }
 
-/* Firma: la franja de 24 h con la posición de cada alerta */
 .franja {
   position: relative;
   height: 74px;
@@ -306,7 +287,6 @@ button { cursor: pointer; }
   background: #0a0e13;
 }
 
-/* Fila plegada: nombre, días y hora de un vistazo */
 .resumen {
   display: flex;
   align-items: center;
