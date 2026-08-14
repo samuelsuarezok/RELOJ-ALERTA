@@ -105,13 +105,17 @@ button { cursor: pointer; }
 
 .mensaje {
   position: absolute;
-  inset: auto 0 6vmin 0;
+  inset: auto 0 5vmin 0;
   text-align: center;
   font-family: var(--mono);
-  font-size: clamp(20px, 5vmin, 72px);
-  letter-spacing: 0.12em;
+  font-size: clamp(20px, min(6.5vw, 12vh), 140px);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--alarma);
+  line-height: 1.05;
+  padding: 0 4vmin;
+  text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 .toma {
@@ -125,16 +129,18 @@ button { cursor: pointer; }
 }
 .toma .titular {
   font-family: var(--mono);
-  font-size: clamp(32px, 11vmin, 150px);
+  font-size: clamp(32px, min(15vw, 30vh), 340px);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--alarma);
   line-height: 1.05;
   padding: 0 4vmin;
+  text-wrap: balance;
+  overflow-wrap: break-word;
 }
 .toma .hora-chica {
   font-family: var(--mono);
-  font-size: clamp(20px, 5vmin, 64px);
+  font-size: clamp(20px, 7vmin, 96px);
   color: var(--tiza);
   opacity: 0.75;
 }
@@ -205,6 +211,7 @@ button { cursor: pointer; }
 }
 
 .pantalla.alerta .logo { opacity: 0.3; }
+.pantalla.con-mensaje .logo { opacity: 0; }
 
 .consola {
   max-width: 1080px;

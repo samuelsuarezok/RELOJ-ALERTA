@@ -153,6 +153,7 @@ export default function Pantalla() {
   const hayAlerta = Boolean(alerta);
   const parpadea = hayAlerta && alerta.alert.blink;
   const toma = hayAlerta && alerta.alert.takeover;
+  const conMensaje = hayAlerta && Boolean(toma || alerta.alert.message);
 
   const estilo = {
     '--acento': config.accent,
@@ -160,7 +161,10 @@ export default function Pantalla() {
   };
 
   return (
-    <main className={`pantalla${hayAlerta ? ' alerta' : ''}`} style={estilo}>
+    <main
+      className={`pantalla${hayAlerta ? ' alerta' : ''}${conMensaje ? ' con-mensaje' : ''}`}
+      style={estilo}
+    >
       {toma ? (
         <div className={`toma${parpadea ? ' parpadeo' : ''}`}>
           <div className="titular">{alerta.alert.message || alerta.alert.label}</div>
