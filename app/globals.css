@@ -51,7 +51,7 @@ button { cursor: pointer; }
 
 /* Los dígitos de segmentos son más altos que la tipografía que había antes,
    así que la esfera subió para seguir acompañándolos en proporción. */
-.esfera { flex: 0 0 auto; width: 26vmin; height: 26vmin; }
+.esfera { flex: 0 0 auto; width: 29.9vmin; height: 29.9vmin; }
 .esfera .marca { stroke: var(--acento); stroke-width: 2.6; }
 .esfera .aguja { stroke: var(--acento); stroke-linecap: round; }
 
@@ -479,6 +479,6 @@ input[type='range'] { width: 100%; accent-color: var(--menta); }
 
 @media (max-width: 900px), (orientation: portrait) {
   .cartel { flex-direction: column; gap: 3vmin; }
-  .esfera { width: 32vmin; height: 32vmin; }
+  .esfera { width: 36.8vmin; height: 36.8vmin; }
   .digitos { font-size: max(56px, min(26vw, 30vh)); }
 }
