@@ -75,7 +75,7 @@ button { cursor: pointer; }
 }
 
 /* Los segmentos apagados quedan apenas insinuados, como en un display real. */
-.segmento { fill: currentColor; opacity: 0.045; }
+.segmento { fill: currentColor; opacity: 0.025; }
 .segmento.prendido { fill: currentColor; opacity: 1; }
 .punto { fill: currentColor; }
 
