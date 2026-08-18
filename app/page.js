@@ -15,6 +15,7 @@ export default function Pantalla() {
   const [alerta, setAlerta] = useState(null);
   const [necesitaAudio, setNecesitaAudio] = useState(false);
   const [enLinea, setEnLinea] = useState(true);
+  const [montado, setMontado] = useState(false);
 
   const desfase = useRef(0);
   const configRef = useRef(config);
@@ -23,6 +24,17 @@ export default function Pantalla() {
 
   configRef.current = config;
   alertaRef.current = alerta;
+
+  /* El reloj no se dibuja hasta estar montado en el navegador.
+     Si se dibuja en el servidor, Next lo hornea en el HTML estatico con la hora
+     del build y todos ven esa hora al entrar. Peor: al hidratar, React no corrige
+     los atributos que no coinciden, y como cree que el DOM refleja su primer
+     render de cliente, despues solo toca los segmentos que el considera
+     cambiados. Los que no, se quedan con el valor del servidor para siempre y
+     los digitos aparecen mutilados. */
+  useEffect(() => {
+    setMontado(true);
+  }, []);
 
   useEffect(() => {
     try {
@@ -165,7 +177,7 @@ export default function Pantalla() {
       className={`pantalla${hayAlerta ? ' alerta' : ''}${conMensaje ? ' con-mensaje' : ''}`}
       style={estilo}
     >
-      {toma ? (
+      {montado && (toma ? (
         <div className={`toma${parpadea ? ' parpadeo' : ''}`}>
           <div className="titular">{alerta.alert.message || alerta.alert.label}</div>
           <div className="hora-chica">
@@ -195,7 +207,7 @@ export default function Pantalla() {
             <div className="mensaje">{alerta.alert.message}</div>
           )}
         </>
-      )}
+      ))}
 
       <div className="barra">
         <button className="chip" onClick={pantallaCompleta}>
