@@ -49,30 +49,40 @@ button { cursor: pointer; }
   justify-content: center;
 }
 
-.esfera { flex: 0 0 auto; width: 21vmin; height: 21vmin; }
+/* Los dígitos de segmentos son más altos que la tipografía que había antes,
+   así que la esfera subió para seguir acompañándolos en proporción. */
+.esfera { flex: 0 0 auto; width: 26vmin; height: 26vmin; }
 .esfera .marca { stroke: var(--acento); stroke-width: 2.6; }
 .esfera .aguja { stroke: var(--acento); stroke-linecap: round; }
 
 .lectura { display: flex; flex-direction: column; min-width: 0; }
 
+/* El font-size sigue siendo la perilla de tamaño aunque adentro ya no haya
+   texto: los SVG de los segmentos se miden en em contra este valor. */
 .digitos {
-  font-family: var(--mono);
   font-size: clamp(64px, min(23vw, 46vh), 500px);
   line-height: 1;
-  font-weight: 400;
-  letter-spacing: -0.005em;
-  font-variant-numeric: tabular-nums;
   color: var(--acento);
   display: flex;
-  align-items: baseline;
-  gap: 0.03em;
-  text-shadow: 0 0 0.16em color-mix(in srgb, var(--acento) 38%, transparent);
+  align-items: flex-end;
+  gap: 0.06em;
 }
 
-.segundos {
-  font-size: 0.42em;
-  line-height: 1;
+.segmentera {
+  display: block;
+  height: 0.92em;
+  width: auto;
 }
+
+/* Los segmentos apagados quedan apenas insinuados, como en un display real. */
+.segmento { fill: currentColor; opacity: 0.045; }
+.segmento.prendido { fill: currentColor; opacity: 1; }
+.punto { fill: currentColor; }
+
+.digitos .segmentera {
+  filter: drop-shadow(0 0 0.013em color-mix(in srgb, currentColor 55%, transparent));
+}
+.segmentera.segundos { height: 0.39em; }
 
 .fecha {
   font-family: var(--mono);
@@ -139,10 +149,11 @@ button { cursor: pointer; }
   overflow-wrap: break-word;
 }
 .toma .hora-chica {
-  font-family: var(--mono);
   font-size: clamp(20px, 7vmin, 96px);
   color: var(--tiza);
   opacity: 0.75;
+  display: flex;
+  justify-content: center;
 }
 
 .barra {

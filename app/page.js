@@ -169,7 +169,7 @@ export default function Pantalla() {
         <div className={`toma${parpadea ? ' parpadeo' : ''}`}>
           <div className="titular">{alerta.alert.message || alerta.alert.label}</div>
           <div className="hora-chica">
-            {dosDigitos(p.hour)}:{dosDigitos(p.minute)}:{dosDigitos(p.second)}
+            <Segmentos texto={`${dosDigitos(p.hour)}:${dosDigitos(p.minute)}:${dosDigitos(p.second)}`} />
           </div>
         </div>
       ) : (
@@ -179,11 +179,9 @@ export default function Pantalla() {
             <div className="lectura">
               {config.header && <div className="rotulo">{config.header}</div>}
               <div className="digitos">
-                <span>
-                  {dosDigitos(p.hour)}:{dosDigitos(p.minute)}
-                </span>
+                <Segmentos texto={`${dosDigitos(p.hour)}:${dosDigitos(p.minute)}`} />
                 {config.showSeconds && (
-                  <span className="segundos">{dosDigitos(p.second)}</span>
+                  <Segmentos className="segundos" texto={dosDigitos(p.second)} />
                 )}
               </div>
               {config.showDate && (
@@ -218,6 +216,109 @@ export default function Pantalla() {
 
       <Marca className="logo" />
     </main>
+  );
+}
+
+/* Dígitos de siete segmentos dibujados a mano, con el mismo criterio que la
+   esfera y que los sonidos: sin tipografías ni archivos externos, así el cartel
+   se ve igual aunque no haya red. Una fuente que no cargue degradaría a Arial
+   y el reloj volvería al aspecto anterior sin que nadie se entere. */
+
+const ANCHO_DIGITO = 100;
+const ANCHO_COLON = 45;
+const ALTO_DIGITO = 180;
+const SEPARACION = 16;
+
+const GRUESO = 15;
+const BORDE = 5;
+const CORTE = 5; // hueco en diagonal entre segmentos vecinos
+
+const EJE_IZQ = BORDE + GRUESO / 2;
+const EJE_DER = ANCHO_DIGITO - BORDE - GRUESO / 2;
+const EJE_SUP = BORDE + GRUESO / 2;
+const EJE_MED = ALTO_DIGITO / 2;
+const EJE_INF = ALTO_DIGITO - BORDE - GRUESO / 2;
+
+const punta = GRUESO / 2;
+
+const acostado = (cy) => {
+  const x0 = EJE_IZQ + CORTE;
+  const x1 = EJE_DER - CORTE;
+  return `${x0},${cy} ${x0 + punta},${cy - punta} ${x1 - punta},${cy - punta} ${x1},${cy} ${x1 - punta},${cy + punta} ${x0 + punta},${cy + punta}`;
+};
+
+const parado = (cx, arriba, abajo) => {
+  const y0 = arriba + CORTE;
+  const y1 = abajo - CORTE;
+  return `${cx},${y0} ${cx + punta},${y0 + punta} ${cx + punta},${y1 - punta} ${cx},${y1} ${cx - punta},${y1 - punta} ${cx - punta},${y0 + punta}`;
+};
+
+const FORMAS = {
+  a: acostado(EJE_SUP),
+  g: acostado(EJE_MED),
+  d: acostado(EJE_INF),
+  f: parado(EJE_IZQ, EJE_SUP, EJE_MED),
+  b: parado(EJE_DER, EJE_SUP, EJE_MED),
+  e: parado(EJE_IZQ, EJE_MED, EJE_INF),
+  c: parado(EJE_DER, EJE_MED, EJE_INF),
+};
+
+const ORDEN = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+
+const ENCENDIDOS = {
+  0: 'abcdef',
+  1: 'bc',
+  2: 'abged',
+  3: 'abgcd',
+  4: 'fgbc',
+  5: 'afgcd',
+  6: 'afgedc',
+  7: 'abc',
+  8: 'abcdefg',
+  9: 'abcfgd',
+};
+
+function Segmentos({ texto, className }) {
+  const piezas = [];
+  let x = 0;
+
+  for (const caracter of texto) {
+    if (caracter === ':') {
+      piezas.push(
+        <g key={piezas.length} transform={`translate(${x},0)`}>
+          <circle className="punto" cx={ANCHO_COLON / 2} cy={EJE_MED - 30} r="9" />
+          <circle className="punto" cx={ANCHO_COLON / 2} cy={EJE_MED + 30} r="9" />
+        </g>
+      );
+      x += ANCHO_COLON + SEPARACION;
+      continue;
+    }
+
+    const prendidos = ENCENDIDOS[caracter] || '';
+    piezas.push(
+      <g key={piezas.length} transform={`translate(${x},0)`}>
+        {ORDEN.map((s) => (
+          <polygon
+            key={s}
+            className={`segmento${prendidos.includes(s) ? ' prendido' : ''}`}
+            points={FORMAS[s]}
+          />
+        ))}
+      </g>
+    );
+    x += ANCHO_DIGITO + SEPARACION;
+  }
+
+  const ancho = Math.max(x - SEPARACION, 1);
+
+  return (
+    <svg
+      className={`segmentera${className ? ` ${className}` : ''}`}
+      viewBox={`0 0 ${ancho} ${ALTO_DIGITO}`}
+      role="presentation"
+    >
+      {piezas}
+    </svg>
   );
 }
 
